@@ -13,12 +13,13 @@ const calculateHash = async () => {
     const filehandle = await fs.open(fileToCalculateHashFor, 'r')
     const readStream = filehandle.createReadStream()
     const hash = createHash('sha256')
-    hash.on('finish', () => {
-        hash.end()
-        console.log(hash.read())
-      })
 
-    readStream.pipe(hash).setEncoding('hex')
+    readStream.pipe(hash)
+    .setEncoding('hex')
+    .on('finish', () => {
+      hash.end()
+      console.log(hash.read())
+    })
 
 };
 
